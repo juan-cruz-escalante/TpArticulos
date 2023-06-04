@@ -39,7 +39,7 @@ namespace Proyecto
             {
                 listaArticulos = negocio.listar();
                 dgvArticulos.DataSource = listaArticulos;
-                dgvArticulos.Columns["imagenes"].Visible = false;
+                ocultarColumnas();
                 cargarImagen(listaArticulos[0].imagenes.ImagenUrl);
             }
             catch (Exception ex)
@@ -47,6 +47,12 @@ namespace Proyecto
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void ocultarColumnas()
+        {
+            dgvArticulos.Columns["imagenes"].Visible = false;
+        }
+
 
         public void cargarImagen(string imagen)
         {
@@ -99,7 +105,20 @@ namespace Proyecto
         private void btbBuscar_Click(object sender, EventArgs e)
         {
             List<Articulos> listaFiltrada;
-            listaFiltrada = listaArticulos.FindAll(x => x.Nombre == tbxFiltro.Text);
+
+            string filtro = tbxFiltro.Text;
+            if (filtro != "")
+            {
+                listaFiltrada = listaArticulos.FindAll(x => x.Nombre == tbxFiltro.Text);
+            }
+            else
+            {
+                listaFiltrada = listaArticulos;
+            }
+
+            dgvArticulos.DataSource = null;
+            dgvArticulos.DataSource = listaFiltrada;
+            ocultarColumnas();
         }
     }
 }
