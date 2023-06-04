@@ -28,9 +28,13 @@ namespace Proyecto
 
         private void dgvArticulos_SelectionChanged(object sender, EventArgs e)
         {
+            if(dgvArticulos.CurrentRow != null)
+            {
             Articulos seleccionado = (Articulos)dgvArticulos.CurrentRow.DataBoundItem;
             cargarImagen(seleccionado.imagenes.ImagenUrl);
+            }
         }
+
 
         public void Cargar()
         {
@@ -51,6 +55,7 @@ namespace Proyecto
         private void ocultarColumnas()
         {
             dgvArticulos.Columns["imagenes"].Visible = false;
+            dgvArticulos.Columns["IdArticulo"].Visible = false;
         }
 
 
@@ -104,18 +109,37 @@ namespace Proyecto
 
         private void btbBuscar_Click(object sender, EventArgs e)
         {
-            List<Articulos> listaFiltrada;
+            //List<Articulos> listaFiltrada;
+            //
+            //string filtro = tbxFiltro.Text;
+            //if (filtro.Length >= 3)
+            //{
+            //    listaFiltrada = listaArticulos.FindAll(x => x.Nombre.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Codigo.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Descripcion.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Marcas.DescripcionMarca.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Categoria.DescripcionCategoria.ToUpper().Contains(tbxFiltro.Text.ToUpper()));
+            //}
+            //else
+            //{
+            //    listaFiltrada = listaArticulos;
+            //}
+            //
+            //dgvArticulos.DataSource = null;
+            //dgvArticulos.DataSource = listaFiltrada;
+            //ocultarColumnas();
+        }
 
+        private void tbxFiltro_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            List<Articulos> listaFiltrada;
+            
             string filtro = tbxFiltro.Text;
-            if (filtro != "")
+            if (filtro.Length >= 3)
             {
-                listaFiltrada = listaArticulos.FindAll(x => x.Nombre == tbxFiltro.Text);
+                listaFiltrada = listaArticulos.FindAll(x => x.Nombre.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Codigo.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Descripcion.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Marcas.DescripcionMarca.ToUpper().Contains(tbxFiltro.Text.ToUpper()) || x.Categoria.DescripcionCategoria.ToUpper().Contains(tbxFiltro.Text.ToUpper()));
             }
             else
             {
                 listaFiltrada = listaArticulos;
             }
-
+            
             dgvArticulos.DataSource = null;
             dgvArticulos.DataSource = listaFiltrada;
             ocultarColumnas();
